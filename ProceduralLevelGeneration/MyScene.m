@@ -20,7 +20,6 @@ static const CGFloat kPlayerMovementSpeed = 100.0f;
 @property (nonatomic) Map *map;
 @property (nonatomic) SKSpriteNode *exit;
 @property (nonatomic) SKTextureAtlas *spriteAtlas;
-@property (nonatomic) SKTextureAtlas *emanAtlas;
 @property (nonatomic) SKSpriteNode *player;
 @property (nonatomic) SKSpriteNode *playerShadow;
 @property (nonatomic) BOOL isExitingLevel;
@@ -44,17 +43,10 @@ static const CGFloat kPlayerMovementSpeed = 100.0f;
         
         // Load the atlas that contains the sprites
         self.spriteAtlas = [SKTextureAtlas atlasNamed:@"sprites"];
-        self.emanAtlas = [SKTextureAtlas atlasNamed:@"emanSprites"];
         
         // Create a new map
         self.map = [[Map alloc] initWithGridSize:CGSizeMake(48, 48)];
-        self.map.maxFloorCount = 110;
-        self.map.turnResistance = 20;
-        self.map.floorMakerSpawnProbability = 25;
-        self.map.maxFloorMakerCount = 5;
-        self.map.roomProbability = 20;
-        self.map.roomMinSize = CGSizeMake(2, 2);
-        self.map.roomMaxSize = CGSizeMake(6, 6);
+        self.map.maxFloorCount = 64;
         [self.map generate];
 
         // Create the exit
@@ -65,8 +57,7 @@ static const CGFloat kPlayerMovementSpeed = 100.0f;
         self.exit.physicsBody.collisionBitMask = 0;
         
         // Create a player node
-        //self.player = [SKSpriteNode spriteNodeWithTexture:[self.spriteAtlas textureNamed:@"idle_0"]];
-        self.player = [SKSpriteNode spriteNodeWithTexture:[self.emanAtlas textureNamed:@"emanNewSprite1"]];
+        self.player = [SKSpriteNode spriteNodeWithTexture:[self.spriteAtlas textureNamed:@"idle_0"]];
         self.player.position = self.map.spawnPoint;
         self.player.physicsBody.allowsRotation = NO;
         self.player.physicsBody = [SKPhysicsBody bodyWithRectangleOfSize:self.player.texture.size];
@@ -75,20 +66,11 @@ static const CGFloat kPlayerMovementSpeed = 100.0f;
         self.player.physicsBody.collisionBitMask = CollisionTypeWall;
         
         // Load sprites for player into arrays for the animations
-        //self.playerIdleAnimationFrames = @[[self.spriteAtlas textureNamed:@"idle_0"]];
-        self.playerIdleAnimationFrames = @[[self.emanAtlas textureNamed:@"emanNewSprite1"]];
+        self.playerIdleAnimationFrames = @[[self.spriteAtlas textureNamed:@"idle_0"]];
         
-        //self.playerWalkAnimationFrames = @[[self.spriteAtlas textureNamed:@"walk_0"],
-        //                                   [self.spriteAtlas textureNamed:@"walk_1"],
-        //                                   [self.spriteAtlas textureNamed:@"walk_2"]];
-        self.playerWalkAnimationFrames = @[[self.emanAtlas textureNamed:@"emanNewSprite1"],
-                                           [self.emanAtlas textureNamed:@"emanNewSprite2"],
-                                           [self.emanAtlas textureNamed:@"emanNewSprite3"],
-                                           [self.emanAtlas textureNamed:@"emanNewSprite4"],
-                                           [self.emanAtlas textureNamed:@"emanNewSprite5"],
-                                           [self.emanAtlas textureNamed:@"emanNewSprite6"],
-                                           [self.emanAtlas textureNamed:@"emanNewSprite7"],
-                                           [self.emanAtlas textureNamed:@"emanNewSprite8"]];
+        self.playerWalkAnimationFrames = @[[self.spriteAtlas textureNamed:@"walk_0"],
+                                           [self.spriteAtlas textureNamed:@"walk_1"],
+                                           [self.spriteAtlas textureNamed:@"walk_2"]];
         
         self.playerShadow = [SKSpriteNode spriteNodeWithTexture:[self.spriteAtlas textureNamed:@"shadow"]];
         self.playerShadow.xScale = 0.6f;
@@ -147,7 +129,7 @@ static const CGFloat kPlayerMovementSpeed = 100.0f;
     
     if ( playerVelocity.x != 0.0f )
     {
-        self.player.xScale = (playerVelocity.x > 0.0f) ? 1.0f : -1.0f;
+        self.player.xScale = (playerVelocity.x > 0.0f) ? -1.0f : 1.0f;
     }
     
     // Ensure correct animation is playing

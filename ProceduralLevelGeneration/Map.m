@@ -9,14 +9,11 @@
 #import "Map.h"
 #import "MapTiles.h"
 #import "MyScene.h"
-#import "FloorMaker.h"
 
 @interface Map ()
 @property (nonatomic) MapTiles *tiles;
 @property (nonatomic) SKTextureAtlas *tileAtlas;
 @property (nonatomic) CGFloat tileSize;
-@property (nonatomic) NSMutableArray *floorMakers;
-
 @end
 
 @implementation Map
@@ -31,14 +28,6 @@
   if (( self = [super init] ))
   {
     self.gridSize = gridSize;
-    self.maxFloorCount = 110;
-    self.turnResistance = 20;
-    self.floorMakerSpawnProbability = 25;
-    self.maxFloorMakerCount = 5;
-    self.roomProbability = 20;
-    self.roomMinSize = CGSizeMake(2, 2);
-    self.roomMaxSize = CGSizeMake(6, 6);
-    
     _spawnPoint = CGPointZero;
     _exitPoint = CGPointZero;
     self.tileAtlas = [SKTextureAtlas atlasNamed:@"tiles"];
@@ -54,72 +43,45 @@
 {
   CGPoint startPoint = CGPointMake(self.tiles.gridSize.width / 2, self.tiles.gridSize.height / 2);
   _spawnPoint = [self convertMapCoordinateToWorldCoordinate:startPoint];
-
+  // 1
   [self.tiles setTileType:MapTileTypeFloor at:startPoint];
-  
-  __block NSUInteger currentFloorCount = 1;
-  self.floorMakers = [NSMutableArray array];
-  [self.floorMakers addObject:[[FloorMaker alloc] initWithCurrentPosition:startPoint andDirection:0]];
-  
+  NSUInteger currentFloorCount = 1;
+  // 2
+  CGPoint currentPosition = startPoint;
   while ( currentFloorCount < self.maxFloorCount )
   {
-    [self.floorMakers enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
-      FloorMaker *floorMaker = (FloorMaker *)obj;
-      
-      if ( floorMaker.direction == 0 || [self randomNumberBetweenMin:0 andMax:100] <= self.turnResistance ){
-        floorMaker.direction = [self randomNumberBetweenMin:1 andMax:4];
-      }
-      CGPoint newPosition;
-      
-      switch ( floorMaker.direction )
-      {
-        case 1: // Up
-          newPosition = CGPointMake(floorMaker.currentPosition.x, floorMaker.currentPosition.y - 1);
-          break;
-        case 2: // Down
-          newPosition = CGPointMake(floorMaker.currentPosition.x, floorMaker.currentPosition.y + 1);
-          break;
-        case 3: // Left
-          newPosition = CGPointMake(floorMaker.currentPosition.x - 1, floorMaker.currentPosition.y);
-          break;
-        case 4: // Right
-          newPosition = CGPointMake(floorMaker.currentPosition.x + 1, floorMaker.currentPosition.y);
-          break;
-      }
-      
-      if([self.tiles isValidTileCoordinateAt:newPosition] &&
-         ![self.tiles isEdgeTileAt:newPosition] &&
-         [self.tiles tileTypeAt:newPosition] == MapTileTypeNone &&
-         currentFloorCount < self.maxFloorCount)
-      {
-        floorMaker.currentPosition = newPosition;
-        [self.tiles setTileType:MapTileTypeFloor at:floorMaker.currentPosition];
-        currentFloorCount++;
-        
-        if ( [self randomNumberBetweenMin:0 andMax:100] <= self.roomProbability )
-        {
-          NSUInteger roomSizeX = [self randomNumberBetweenMin:self.roomMinSize.width
-                                                       andMax:self.roomMaxSize.width];
-          NSUInteger roomSizeY = [self randomNumberBetweenMin:self.roomMinSize.height
-                                                       andMax:self.roomMaxSize.height];
-          
-          currentFloorCount += [self generateRoomAt:floorMaker.currentPosition
-                                           withSize:CGSizeMake(roomSizeX, roomSizeY)];
-        }
-        
-        _exitPoint = [self convertMapCoordinateToWorldCoordinate:floorMaker.currentPosition];
-      }
-      
-      if ( [self randomNumberBetweenMin:0 andMax:100] <= self.floorMakerSpawnProbability &&
-          self.floorMakers.count < self.maxFloorMakerCount )
-      {
-        FloorMaker *newFloorMaker = [[FloorMaker alloc] initWithCurrentPosition:floorMaker.currentPosition andDirection:[self randomNumberBetweenMin:1 andMax:4]];
-        
-        [self.floorMakers addObject:newFloorMaker];
-      }
-    }];
+    // 3
+    NSInteger direction = [self randomNumberBetweenMin:1 andMax:4];
+    CGPoint newPosition;
+    // 4
+    switch ( direction )
+    {
+      case 1: // Up
+        newPosition = CGPointMake(currentPosition.x, currentPosition.y - 1);
+        break;
+      case 2: // Down
+        newPosition = CGPointMake(currentPosition.x, currentPosition.y + 1);
+        break;
+      case 3: // Left
+        newPosition = CGPointMake(currentPosition.x - 1, currentPosition.y);
+        break;
+      case 4: // Right
+        newPosition = CGPointMake(currentPosition.x + 1, currentPosition.y);
+        break;
+    }
+    //5
+    if([self.tiles isValidTileCoordinateAt:newPosition] &&
+       ![self.tiles isEdgeTileAt:newPosition] &&
+       [self.tiles tileTypeAt:newPosition] == MapTileTypeNone)
+    {
+      currentPosition = newPosition;
+      [self.tiles setTileType:MapTileTypeFloor at:currentPosition];
+      currentFloorCount++;
+    }
   }
-  
+  // 6
+  _exitPoint = [self convertMapCoordinateToWorldCoordinate:currentPosition];
+  // 7
   NSLog(@"%@", [self.tiles description]);
 }
 
@@ -246,34 +208,6 @@
       }
     }
   }
-}
-
-- (NSUInteger) generateRoomAt:(CGPoint)position withSize:(CGSize)size
-{
-  NSUInteger numberOfFloorsGenerated = 0;
-  for ( NSUInteger y = 0; y < size.height; y++)
-  {
-    for ( NSUInteger x = 0; x < size.width; x++ )
-    {
-      CGPoint tilePosition = CGPointMake(position.x + x, position.y + y);
-      
-      if ( [self.tiles tileTypeAt:tilePosition] == MapTileTypeInvalid )
-      {
-        continue;
-      }
-      
-      if ( ![self.tiles isEdgeTileAt:tilePosition] )
-      {
-        if ( [self.tiles tileTypeAt:tilePosition] == MapTileTypeNone )
-        {
-          [self.tiles setTileType:MapTileTypeFloor at:tilePosition];
-          
-          numberOfFloorsGenerated++;
-        }
-      }
-    }
-  }
-  return numberOfFloorsGenerated;
 }
 
 @end

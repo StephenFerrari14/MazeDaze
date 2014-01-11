@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		0956F00818737F4D00D065C6 /* emanSprites.atlas in Resources */ = {isa = PBXBuildFile; fileRef = 0956F00718737F4D00D065C6 /* emanSprites.atlas */; };
 		4414DA7417BD27CE00E3CE36 /* step.wav in Resources */ = {isa = PBXBuildFile; fileRef = 4414DA7317BD27CE00E3CE36 /* step.wav */; };
 		4414DA7717BD286B00E3CE36 /* win.wav in Resources */ = {isa = PBXBuildFile; fileRef = 4414DA7617BD286B00E3CE36 /* win.wav */; };
 		4414DA7917BD364600E3CE36 /* SillyFun.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 4414DA7817BD356600E3CE36 /* SillyFun.mp3 */; };
@@ -25,13 +24,11 @@
 		449AF6CF17B52CAD0004289F /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 449AF6CE17B52CAD0004289F /* ViewController.m */; };
 		449AF6D217B52CAD0004289F /* MyScene.m in Sources */ = {isa = PBXBuildFile; fileRef = 449AF6D117B52CAD0004289F /* MyScene.m */; };
 		449AF6D617B52CAD0004289F /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 449AF6D517B52CAD0004289F /* Images.xcassets */; };
-		95375FD518031B4400F10821 /* FloorMaker.m in Sources */ = {isa = PBXBuildFile; fileRef = 95375FD418031B4400F10821 /* FloorMaker.m */; };
 		95BF88381801F9FA00D98EC0 /* Map.m in Sources */ = {isa = PBXBuildFile; fileRef = 95BF88371801F9FA00D98EC0 /* Map.m */; };
 		95BF883B1802020200D98EC0 /* MapTiles.m in Sources */ = {isa = PBXBuildFile; fileRef = 95BF883A1802020200D98EC0 /* MapTiles.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		0956F00718737F4D00D065C6 /* emanSprites.atlas */ = {isa = PBXFileReference; lastKnownFileType = folder.skatlas; name = emanSprites.atlas; path = ../../ProceduralLevelGeneration/ProceduralLevelGeneration/emanSprites.atlas; sourceTree = "<group>"; };
 		4414DA7317BD27CE00E3CE36 /* step.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; name = step.wav; path = sound/step.wav; sourceTree = "<group>"; };
 		4414DA7617BD286B00E3CE36 /* win.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; name = win.wav; path = sound/win.wav; sourceTree = "<group>"; };
 		4414DA7817BD356600E3CE36 /* SillyFun.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; name = SillyFun.mp3; path = sound/SillyFun.mp3; sourceTree = "<group>"; };
@@ -57,8 +54,6 @@
 		449AF6D117B52CAD0004289F /* MyScene.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MyScene.m; sourceTree = "<group>"; };
 		449AF6D517B52CAD0004289F /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		449AF6DC17B52CAD0004289F /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
-		95375FD318031B4400F10821 /* FloorMaker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FloorMaker.h; sourceTree = "<group>"; };
-		95375FD418031B4400F10821 /* FloorMaker.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FloorMaker.m; sourceTree = "<group>"; };
 		95BF88361801F9FA00D98EC0 /* Map.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Map.h; sourceTree = "<group>"; };
 		95BF88371801F9FA00D98EC0 /* Map.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Map.m; sourceTree = "<group>"; };
 		95BF88391802020200D98EC0 /* MapTiles.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MapTiles.h; sourceTree = "<group>"; };
@@ -123,7 +118,6 @@
 		449AF6BE17B52CAD0004289F /* ProceduralLevelGeneration */ = {
 			isa = PBXGroup;
 			children = (
-				0956F00718737F4D00D065C6 /* emanSprites.atlas */,
 				449AF6C717B52CAD0004289F /* AppDelegate.h */,
 				449AF6C817B52CAD0004289F /* AppDelegate.m */,
 				448D6AFF17B7CAA3002FA381 /* DPad.h */,
@@ -140,8 +134,6 @@
 				95BF88371801F9FA00D98EC0 /* Map.m */,
 				95BF88391802020200D98EC0 /* MapTiles.h */,
 				95BF883A1802020200D98EC0 /* MapTiles.m */,
-				95375FD318031B4400F10821 /* FloorMaker.h */,
-				95375FD418031B4400F10821 /* FloorMaker.m */,
 			);
 			path = ProceduralLevelGeneration;
 			sourceTree = "<group>";
@@ -217,7 +209,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				4414DA7917BD364600E3CE36 /* SillyFun.mp3 in Resources */,
-				0956F00818737F4D00D065C6 /* emanSprites.atlas in Resources */,
 				4414DA7717BD286B00E3CE36 /* win.wav in Resources */,
 				4414DA7417BD27CE00E3CE36 /* step.wav in Resources */,
 				448D6AFC17B7C9A3002FA381 /* sprites.atlas in Resources */,
@@ -236,7 +227,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				95BF88381801F9FA00D98EC0 /* Map.m in Sources */,
-				95375FD518031B4400F10821 /* FloorMaker.m in Sources */,
 				448D6B0117B7D011002FA381 /* DPad.m in Sources */,
 				95BF883B1802020200D98EC0 /* MapTiles.m in Sources */,
 				449AF6D217B52CAD0004289F /* MyScene.m in Sources */,
